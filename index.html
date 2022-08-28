@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+  <title>shamil weather</title>
+  <link rel="icon" href="icon.ico"/>
+  <style>
+    body{
+  background-image: url("https://cdn1.vectorstock.com/i/thumb-large/16/45/cloud-pattern-background-flat-white-clouds-vector-26551645.jpg");
+  background-size: cover;
+  text-align: center;
+}
+.container{
+  background-color: skyblue;
+  border-radius: 15px;
+  text-align: center;
+  font-family: merriweather;
+  height: 980px;
+  font-size: 50px;
+}
+.input{
+  text-align: center;
+  background-color: white;
+  border-radius: 15px;
+  height: 50px;
+}
+.submit{
+  border-radius: 15px;
+  font-family: helios;
+  height: 43px;
+  width: 70px;
+  font-size: 17px;
+}
+.input_text{
+  border-radius: 7px;
+  height: 46px;
+  font-size: 20px;
+}
+.min-max{
+  color: darkblue;
+}
+.text{
+  color: red;
+}
+.card{
+  color: red;
+}
+.name{
+  color: black;
+}
+i img{
+  height: 50px;
+  width: 50px;
+}
+  </style>
+</head>
+<body>
+    <div class="input">
+      <input type="text" placeholder="Enter the city" class="input_text">
+      <input type="submit" value="Submit" class="submit">
+    </div>
+  <div class="container">
+    <div class="card">
+      <h1 class="name" id="name"/>
+      <h1 class="min-max" style="font-size: 60%;"></h1>
+      <p class="temp"/>
+      <p class="desc"/>
+      <p class="humidty"></p>
+      <p class="feels_like"/>
+      <p class="visibility"/>
+      <p class="pressure"/>
+    </div>
+  </div>
+<script>var input = document.querySelector('.input_text');
+var main = document.querySelector('#name');
+var temp = document.querySelector('.temp');
+var desc = document.querySelector('.desc');
+var clouds = document.querySelector('.clouds');
+var button= document.querySelector('.submit');
+var humidty= document.querySelector('.humidty');
+var feelslike= document.querySelector('.feels_like');
+var visibility = document.querySelector('.visibility');
+var pressure = document.querySelector('.pressure');
+var min_max = document.querySelector('.min-max');
+
+button.addEventListener('click', function(name){
+fetch('https://api.openweathermap.org/data/2.5/weather?q='+input.value+'&appid=5de40759ad0c01742526ae8a1f434f02')
+.then(response => response.json())
+.then(data => {
+  var nameValue = data['name'];
+  var feelsValue = Math.round(data['main']['feels_like'] - 273.15)+"°C";
+  var descValue = data['weather'][0]['description'];
+  var tempValue = Math.round(data['main']['temp'] - 273.15);
+  var humidValue = data['main']['humidity']+"%";
+  var minValue = Math.round(data['main']['temp_min'] - 273.15)+"°C";
+  var maxValue = Math.round(data['main']['temp_max'] - 273.15)+"°C";
+  var pressureValue = data['main']['pressure'] +"mb";
+  var visibilityValue = data['visibility'] / 1000 +" km";
+  
+  main.innerHTML = nameValue;
+  desc.innerHTML = "Description - "+descValue;
+  temp.innerHTML = "Temp - "+tempValue;
+  humidty.innerHTML = "humidity - "+humidValue;
+  feelslike.innerHTML = "feels like - "+feelsValue;
+  visibility.innerHTML = "visibility - "+visibilityValue;
+  pressure.innerHTML = "pressure - "+pressureValue;
+  min_max.innerHTML = minValue +"/"+ maxValue;
+  input.value ="";
+
+})
+
+.catch(err => alert("Wrong city name!"));
+})</script>
+</body>
+</html>
+</body>
+</html>
